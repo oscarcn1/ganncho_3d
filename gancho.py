@@ -168,32 +168,11 @@ def cleanup_mesh(obj):
 
 
 def build():
-    # Centros Y de cada patita: posicionados para que la parte horizontal de
-    # cada L quede centrada en su orificio correspondiente de la pared.
-    patita_centers = [(0.0, +PATITA_CENTER_Y), (0.0, -PATITA_CENTER_Y)]
-
     # 1) Placa base solida, cara inferior en Z=0
     plate = add_box("plate", PLATE_X, PLATE_Y, PLATE_Z, (0.0, 0.0, PLATE_Z / 2.0))
 
-    # 2) Patitas en forma de L: parte corta vertical sujeta a la placa,
-    # parte larga horizontal extendida en sentido OPUESTO al doblez del
-    # gancho (las patitas muerden hacia un lado y el gancho hacia el otro).
-    # La parte horizontal queda centrada en cy = ±PATITA_CENTER_Y, que es
-    # exactamente el centro del orificio de la pared.
-    for i, (cx, cy) in enumerate(patita_centers):
-        dir_y = -BEND_DIR_Y
-        corner_y = cy - dir_y * FOOT_LONG_LEN / 2.0
-        foot = add_l_foot(
-            name=f"foot_{i}",
-            corner_y=corner_y,
-            dir_y=dir_y,
-            width_x=FOOT_WIDTH,
-            long_len=FOOT_LONG_LEN,
-            short_h=FOOT_SHORT_H,
-            thick_short=FOOT_THICK_SHORT,
-            thick_long=FOOT_THICK_LONG,
-        )
-        boolean(plate, foot, "UNION")
+    # Variante sin patitas: la rama `sin-patitas` omite el bloque de clips L
+    # bajo la placa. La pieza se monta sin entrar en orificios de pared.
 
     # 4) Gancho (poste vertical + tramo doblado) como UNA sola curva Bezier
     # con bevel circular. Asi el gancho sale continuo, sin discos visibles
