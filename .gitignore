@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Blender
+*.blend1
+*.blend2
+*.blend@
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.python-version
+
+# Slicer / outputs de impresion
+*.gcode
+*.3mf
+*.gcode.3mf
+*.bgcode
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~
+
+# Sistema
+Thumbs.db
