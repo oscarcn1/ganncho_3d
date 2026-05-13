@@ -24,22 +24,24 @@ PLATE_X = 25.15
 PLATE_Y = 57.74
 PLATE_Z = 5.0
 
-WINDOW_X = 9.39
-WINDOW_Y = 8.62
-WINDOW_MARGIN_Y = 6.09  # distancia del borde Y de la placa al borde mas cercano de la ventana
-                        # (gap interno entre ventanas = PLATE_Y - 2*(WINDOW_MARGIN_Y + WINDOW_Y) = 28.32 mm)
+# Pared de montaje: dos orificios cuadrados de WALL_HOLE_SIZE de lado,
+# separados WALL_HOLE_GAP entre sus bordes interiores. La parte horizontal
+# de cada patita se centra en su orificio respectivo.
+WALL_HOLE_SIZE = 10.0
+WALL_HOLE_GAP = 22.10
+PATITA_CENTER_Y = (WALL_HOLE_GAP + WALL_HOLE_SIZE) / 2.0  # ±16.05
 
 POST_D = 9.39
 POST_H = 25.0                       # tramo vertical
 BEND_LEN = 9.25                     # tramo inclinado
-BEND_ANGLE_FROM_HORIZONTAL_DEG = 60.0  # 60deg sobre la horizontal => 30deg desde la vertical
+BEND_ANGLE_FROM_HORIZONTAL_DEG = 45.0  # 45deg sobre la horizontal => 45deg desde la vertical
 BEND_DIR_Y = +1.0                   # +1 dobla hacia +Y, -1 hacia -Y
 
-FOOT_WIDTH = 8.6        # ancho del clip en X (igual al ancho de la ventana)
-FOOT_LONG_LEN = 8.6     # largo de la parte horizontal de la L (a lo largo de Y)
-FOOT_SHORT_H = 3.0      # altura de la parte vertical (corta) de la L, lo que la patita sobresale por debajo de la placa
-FOOT_THICK_SHORT = 1.5  # espesor (en Y) de la parte vertical de la L
-FOOT_THICK_LONG = 1.5   # espesor (en Z) de la parte horizontal de la L
+FOOT_WIDTH = 8.0        # ancho del clip en X
+FOOT_LONG_LEN = 8.0     # largo de la parte horizontal de la L (a lo largo de Y)
+FOOT_SHORT_H = 4.0      # altura de la parte vertical (corta) de la L, lo que la patita sobresale por debajo de la placa
+FOOT_THICK_SHORT = 1.9  # espesor (en Y) de la parte vertical de la L
+FOOT_THICK_LONG = 1.9   # espesor (en Z) de la parte horizontal de la L
 
 CYL_VERTS = 96
 MM = 0.001  # mm -> m para Blender
@@ -166,30 +168,19 @@ def cleanup_mesh(obj):
 
 
 def build():
-    # Centros Y de cada ventana (y de cada patita)
-    win_center_y = (PLATE_Y / 2.0) - WINDOW_MARGIN_Y - (WINDOW_Y / 2.0)
-    win_centers = [(0.0, +win_center_y), (0.0, -win_center_y)]
+    # Centros Y de cada patita: posicionados para que la parte horizontal de
+    # cada L quede centrada en su orificio correspondiente de la pared.
+    patita_centers = [(0.0, +PATITA_CENTER_Y), (0.0, -PATITA_CENTER_Y)]
 
-    # 1) Placa base, cara inferior en Z=0
+    # 1) Placa base solida, cara inferior en Z=0
     plate = add_box("plate", PLATE_X, PLATE_Y, PLATE_Z, (0.0, 0.0, PLATE_Z / 2.0))
 
-    # 2) Ventanas pasantes (DIFFERENCE)
-    for i, (cx, cy) in enumerate(win_centers):
-        cutter = add_box(
-            f"win_cutter_{i}",
-            WINDOW_X,
-            WINDOW_Y,
-            PLATE_Z + 2.0,  # un poco mas alto para evitar caras coplanares
-            (cx, cy, PLATE_Z / 2.0),
-        )
-        boolean(plate, cutter, "DIFFERENCE")
-
-    # 3) Patitas en forma de L: parte corta vertical sujeta a la placa,
+    # 2) Patitas en forma de L: parte corta vertical sujeta a la placa,
     # parte larga horizontal extendida en sentido OPUESTO al doblez del
     # gancho (las patitas muerden hacia un lado y el gancho hacia el otro).
-    # El codo de cada L se ubica para que la parte larga quede centrada en Y
-    # respecto a la ventana correspondiente.
-    for i, (cx, cy) in enumerate(win_centers):
+    # La parte horizontal queda centrada en cy = ±PATITA_CENTER_Y, que es
+    # exactamente el centro del orificio de la pared.
+    for i, (cx, cy) in enumerate(patita_centers):
         dir_y = -BEND_DIR_Y
         corner_y = cy - dir_y * FOOT_LONG_LEN / 2.0
         foot = add_l_foot(

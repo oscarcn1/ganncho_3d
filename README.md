@@ -8,13 +8,13 @@ La pieza completa se construye desde cero con `bpy` (Python API de Blender). Tod
 
 | Pieza | Dimensiones (mm) |
 |---|---|
-| Placa base | 25.15 × 57.74 × 5.0 |
-| Ventanas pasantes (×2) | 9.39 × 8.62, separadas 28.32 mm entre bordes interiores |
+| Placa base (sólida) | 25.15 × 57.74 × 5.0 |
 | Poste vertical del gancho | Ø9.39, altura 25.0 |
-| Tramo doblado del gancho | largo 9.25, doblez a 60° sobre la horizontal, punta semi-esférica |
-| Patitas en L (×2) | parte corta 8.6 × 1.5 × 3 vertical + parte larga 8.6 × 8.6 × 1.5 horizontal |
+| Tramo doblado del gancho | largo 9.25, doblez a 45° sobre la horizontal, punta semi-esférica |
+| Patitas en L (×2) | parte corta 8.0 × 1.9 × 4 vertical + parte larga 8.0 × 8.0 × 1.9 horizontal |
+| Orificios de la pared destino | 10 × 10, separados 22.10 mm entre bordes interiores (las patitas se centran ahí) |
 
-Bounding box final tras orientar para impresión: **45.7 × 57.74 × 25.15 mm**.
+Bounding box final tras orientar para impresión: **45.2 × 57.74 × 25.15 mm**.
 
 ## Uso
 
@@ -38,10 +38,11 @@ Las constantes al inicio de `gancho.py` están agrupadas y comentadas. Las más 
 | Constante | Valor actual | Qué controla |
 |---|---|---|
 | `PLATE_X`, `PLATE_Y`, `PLATE_Z` | 25.15, 57.74, 5.0 | Dimensiones de la placa base |
-| `WINDOW_X`, `WINDOW_Y`, `WINDOW_MARGIN_Y` | 9.39, 8.62, 6.09 | Tamaño y posición de las ventanas |
+| `WALL_HOLE_SIZE`, `WALL_HOLE_GAP` | 10.0, 22.10 | Geometría de los orificios de la pared (lado y separación entre bordes); deriva `PATITA_CENTER_Y` para alinear las patitas |
 | `POST_D`, `POST_H` | 9.39, 25.0 | Diámetro y altura del poste |
-| `BEND_LEN`, `BEND_ANGLE_FROM_HORIZONTAL_DEG`, `BEND_DIR_Y` | 9.25, 60.0, +1.0 | Geometría del doblez del gancho |
-| `FOOT_WIDTH`, `FOOT_LONG_LEN`, `FOOT_SHORT_H` | 8.6, 8.6, 3.0 | Dimensiones de las patitas en L |
+| `BEND_LEN`, `BEND_ANGLE_FROM_HORIZONTAL_DEG`, `BEND_DIR_Y` | 9.25, 45.0, +1.0 | Geometría del doblez del gancho |
+| `FOOT_WIDTH`, `FOOT_LONG_LEN`, `FOOT_SHORT_H` | 8.0, 8.0, 4.0 | Dimensiones de las patitas en L |
+| `FOOT_THICK_SHORT`, `FOOT_THICK_LONG` | 1.9, 1.9 | Espesor de las dos partes de la L |
 
 Cambiar cualquier constante y volver a ejecutar el script regenera el STL automáticamente con la geometría nueva.
 
