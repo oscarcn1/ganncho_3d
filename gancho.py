@@ -28,7 +28,7 @@ PLATE_Z = 5.0
 # separados WALL_HOLE_GAP entre sus bordes interiores. La parte horizontal
 # de cada patita se centra en su orificio respectivo.
 WALL_HOLE_SIZE = 10.0
-WALL_HOLE_GAP = 22.10
+WALL_HOLE_GAP = 28.10
 PATITA_CENTER_Y = (WALL_HOLE_GAP + WALL_HOLE_SIZE) / 2.0  # ±16.05
 
 POST_D = 9.39

@@ -12,7 +12,7 @@ La pieza completa se construye desde cero con `bpy` (Python API de Blender). Tod
 | Poste vertical del gancho | Ø9.39, altura 25.0 |
 | Tramo doblado del gancho | largo 9.25, doblez a 45° sobre la horizontal, punta semi-esférica |
 | Patitas en L (×2) | parte corta 8.0 × 1.9 × 4 vertical + parte larga 8.0 × 8.0 × 1.9 horizontal |
-| Orificios de la pared destino | 10 × 10, separados 22.10 mm entre bordes interiores (las patitas se centran ahí) |
+| Orificios de la pared destino | 10 × 10, separados 28.10 mm entre bordes interiores (las patitas se centran ahí) |
 
 Bounding box final tras orientar para impresión: **45.2 × 57.74 × 25.15 mm**.
 
